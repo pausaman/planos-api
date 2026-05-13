@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
+from typing import List
 from openai import OpenAI
 import fitz
 import base64
@@ -29,7 +30,7 @@ Extrae información estructurada de este plano de acero tipo Tekla.
 
 Archivo fuente: {filename}
 
-Reglas importantes:
+Reglas:
 - Responde SOLO JSON válido.
 - No inventes datos.
 - Si un dato no aparece, usa null.
@@ -37,7 +38,7 @@ Reglas importantes:
 - No cuentes los barrenos como resultado principal.
 - No conviertas Ø 5/8" a milímetros; guárdalo como "5/8 in".
 - La pestaña destino debe ser el perfil principal, por ejemplo "8C3014".
-- Distingue entre el peso del material principal y los totales generales.
+- Distingue entre el peso del material principal, clip y totales generales.
 - Si existe clip L6, extrae sus datos por separado.
 - Extrae Unit Weight Kg, Tot Weight Kg y Painting Area m2.
 
@@ -129,7 +130,7 @@ async def extract_pdf(file: UploadFile = File(...)):
 
 
 @app.post("/extract-batch")
-async def extract_batch(files: list[UploadFile] = File(...)):
+async def extract_batch(files: List[UploadFile] = File(...)):
     items = []
 
     for file in files:
