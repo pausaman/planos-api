@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
-from typing import List
+from typing import List, Annotated
 from openai import OpenAI
 import fitz
 import base64
@@ -130,7 +130,9 @@ async def extract_pdf(file: UploadFile = File(...)):
 
 
 @app.post("/extract-batch")
-async def extract_batch(files: List[UploadFile] = File(...)):
+async def extract_batch(
+    files: Annotated[List[UploadFile], File(description="Archivos PDF a procesar")]
+):
     items = []
 
     for file in files:
