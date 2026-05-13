@@ -6,5 +6,7 @@ supabase
 python-dotenv
 pymupdf
 pillow
+ezdxf
+openpyxl
 setuptools
 wheel
